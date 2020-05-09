@@ -20,4 +20,6 @@ requireDir('./src/models');
 
 app.use('/api', require('./src/routes'));
 
-app.listen(3005);
+app.listen(process.env.PORT, () => {
+    console.log('Server connected on port: ',process.env.PORT )
+} );
