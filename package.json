@@ -22,10 +22,11 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-ws": "^4.0.0",
     "mongoose": "^5.7.5",
     "require-dir": "^1.2.0"
-},
-"devDependencies": {
+  },
+  "devDependencies": {
     "nodemon": "^2.0.3"
   }
 }

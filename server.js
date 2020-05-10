@@ -1,11 +1,13 @@
 require('dotenv').config()
 const express = require('express');
+const app = express();
 const mongoose = require('mongoose');
 const requireDir = require('require-dir');
 const cors = require('cors');
+const expressWs = require('express-ws')(app);
+
 
 // Iniciando o app
-const app = express();
 app.use(express.json());
 app.use(cors());
 
@@ -22,4 +24,4 @@ app.use('/api', require('./src/routes'));
 
 app.listen(process.env.PORT, () => {
     console.log('Server connected on port: ',process.env.PORT )
-} );
+});
