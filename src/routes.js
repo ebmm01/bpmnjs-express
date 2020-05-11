@@ -14,6 +14,8 @@ routes.put('/wfmodel/:id', WfModelController.update)
 routes.delete('/wfmodel/:id', WfModelController.destroy)
 
 // Ws routes
-routes.ws('/ws', wfSocketController.config)
+routes.ws('/ws', async (ws, req) => {
+    await wfSocketController.config(ws, req);
+})
 
 module.exports = routes;
