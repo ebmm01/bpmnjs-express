@@ -37,6 +37,9 @@ class WfSocketController {
             else {
                 workflows[msg.workflowId].clients.push(ws)
             }
+
+            _this.notifyClientList(msg.workflowId);
+            
         }
         else {
             _this.next({msg, ws})
@@ -74,6 +77,9 @@ class WfSocketController {
                 else {
                     workflows[msg.newWorkflow].clients.push(ws)
                 }
+
+                _this.notifyClientList(msg.oldWorkflow)
+                _this.notifyClientList(msg.newWorkflow)
             }
         }
         else {
@@ -99,6 +105,7 @@ class WfSocketController {
         ws.on('close', () => {
             if (workflows[ws.workflow] && workflows[ws.workflow].clients) {
                 _this.handleWsRemove(ws.workflow, ws.id)
+                _this.notifyClientList(ws.workflow)
             }
         })
     }
@@ -112,6 +119,25 @@ class WfSocketController {
 
         if (workflows[workflow].clients.length === 0) {
             delete workflows[workflow]
+        }
+        else {
+            this.notifyClientList(workflow);
+        }
+    }
+
+    notifyClientList(workflowId) {
+        if (workflows[workflowId] && workflows[workflowId].clients) {
+            const clientList = workflows[workflowId].clients.map(client => client.id)
+            workflows[workflowId].clients.map(client => {
+                try {
+                    client.send(JSON.stringify({
+                        type: 'clientList',
+                        clients: clientList
+                    }))
+                } catch(error) {
+                    console.log(error)
+                }
+            })
         }
     }
 }
